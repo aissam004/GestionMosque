@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\MarqueMateriel;
+use App\Models\Modele;
 use Illuminate\Http\Request;
 
-class MarqueMaterielController extends Controller
+class ModeleController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +41,10 @@ class MarqueMaterielController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\MarqueMateriel  $marqueMateriel
+     * @param  \App\Models\Modele  $Modele
      * @return \Illuminate\Http\Response
      */
-    public function show(MarqueMateriel $marqueMateriel)
+    public function show(Modele $Modele)
     {
         //
     }
@@ -52,10 +52,10 @@ class MarqueMaterielController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\MarqueMateriel  $marqueMateriel
+     * @param  \App\Models\Modele  $Modele
      * @return \Illuminate\Http\Response
      */
-    public function edit(MarqueMateriel $marqueMateriel)
+    public function edit(Modele $Modele)
     {
         //
     }
@@ -64,10 +64,10 @@ class MarqueMaterielController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\MarqueMateriel  $marqueMateriel
+     * @param  \App\Models\Modele  $Modele
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, MarqueMateriel $marqueMateriel)
+    public function update(Request $request, Modele $Modele)
     {
         //
     }
@@ -75,10 +75,10 @@ class MarqueMaterielController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\MarqueMateriel  $marqueMateriel
+     * @param  \App\Models\Modele  $Modele
      * @return \Illuminate\Http\Response
      */
-    public function destroy(MarqueMateriel $marqueMateriel)
+    public function destroy(Modele $Modele)
     {
         //
     }

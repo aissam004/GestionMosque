@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ModelMateriel;
+use App\Models\Marque;
 use Illuminate\Http\Request;
 
-class ModelMaterielController extends Controller
+class MarqueController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +41,10 @@ class ModelMaterielController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\ModelMateriel  $modelMateriel
+     * @param  \App\Models\Marque  $Marque
      * @return \Illuminate\Http\Response
      */
-    public function show(ModelMateriel $modelMateriel)
+    public function show(Marque $Marque)
     {
         //
     }
@@ -52,10 +52,10 @@ class ModelMaterielController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\ModelMateriel  $modelMateriel
+     * @param  \App\Models\Marque  $Marque
      * @return \Illuminate\Http\Response
      */
-    public function edit(ModelMateriel $modelMateriel)
+    public function edit(Marque $Marque)
     {
         //
     }
@@ -64,10 +64,10 @@ class ModelMaterielController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\ModelMateriel  $modelMateriel
+     * @param  \App\Models\Marque  $Marque
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ModelMateriel $modelMateriel)
+    public function update(Request $request, Marque $Marque)
     {
         //
     }
@@ -75,10 +75,10 @@ class ModelMaterielController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\ModelMateriel  $modelMateriel
+     * @param  \App\Models\Marque  $Marque
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ModelMateriel $modelMateriel)
+    public function destroy(Marque $Marque)
     {
         //
     }

@@ -15,4 +15,7 @@ class Materiel extends Model
     public function attribution(){
         return $this->belongsTo(Attribution::class);
     }
+    public function etat(){
+        return $this->belongsTo(Etat::class);
+    }
 }

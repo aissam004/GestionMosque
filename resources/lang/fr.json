@@ -1,0 +1,10 @@
+{
+  "create material": "Créer un matériel",
+  "serialnumber": "Numéro de série",
+  "marque":"Marque",
+  "select marque" : "Selectionez la marque ...",
+  "type" : "Type",
+  "select type":"Selectionez le type ...",
+  "modele" : "Modèle",
+  "select modele" :"Selectionez le modèle ..."
+}

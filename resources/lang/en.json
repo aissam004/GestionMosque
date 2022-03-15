@@ -4,5 +4,12 @@
     "The :attribute must contain at least one symbol.": "The :attribute must contain at least one symbol.",
     "The :attribute must contain at least one uppercase and one lowercase letter.": "The :attribute must contain at least one uppercase and one lowercase letter.",
     "The given :attribute has appeared in a data leak. Please choose a different :attribute.": "The given :attribute has appeared in a data leak. Please choose a different :attribute.",
-
+    "create material": "Create material",
+    "serialnumber": "Serial number",
+    "marque": "brand",
+    "select marque" : "Select the brand ...",
+    "type" : "Type",
+    "select type":"select type ...",
+    "modele" : "Model",
+  "select modele" :"Select model ..."
 }

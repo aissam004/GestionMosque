@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Materiel;
 use App\Http\Requests\StoreMaterielRequest;
 use App\Http\Requests\UpdateMaterielRequest;
+use App\Models\Marque;
+use App\Models\Type;
+use Illuminate\Http\Request;
 
 class MaterielController extends Controller
 {
@@ -15,7 +18,8 @@ class MaterielController extends Controller
      */
     public function index()
     {
-        //
+
+        return view('materiels.index');
     }
 
     /**
@@ -25,16 +29,17 @@ class MaterielController extends Controller
      */
     public function create()
     {
-        //
+
+        return view('materiels.create');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreMaterielRequest  $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreMaterielRequest $request)
+    public function store(Request $request)
     {
         //
     }
@@ -64,11 +69,11 @@ class MaterielController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateMaterielRequest  $request
+     * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Materiel  $materiel
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateMaterielRequest $request, Materiel $materiel)
+    public function update(Request $request, Materiel $materiel)
     {
         //
     }

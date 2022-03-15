@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\TypeMateriel;
+use App\Models\Type;
 use Illuminate\Http\Request;
 
-class TypeMaterielController extends Controller
+class TypeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +41,10 @@ class TypeMaterielController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\TypeMateriel  $typeMateriel
+     * @param  \App\Models\Type  $Type
      * @return \Illuminate\Http\Response
      */
-    public function show(TypeMateriel $typeMateriel)
+    public function show(Type $Type)
     {
         //
     }
@@ -52,10 +52,10 @@ class TypeMaterielController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\TypeMateriel  $typeMateriel
+     * @param  \App\Models\Type  $Type
      * @return \Illuminate\Http\Response
      */
-    public function edit(TypeMateriel $typeMateriel)
+    public function edit(Type $Type)
     {
         //
     }
@@ -64,10 +64,10 @@ class TypeMaterielController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\TypeMateriel  $typeMateriel
+     * @param  \App\Models\Type  $Type
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, TypeMateriel $typeMateriel)
+    public function update(Request $request, Type $Type)
     {
         //
     }
@@ -75,10 +75,10 @@ class TypeMaterielController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\TypeMateriel  $typeMateriel
+     * @param  \App\Models\Type  $Type
      * @return \Illuminate\Http\Response
      */
-    public function destroy(TypeMateriel $typeMateriel)
+    public function destroy(Type $Type)
     {
         //
     }
