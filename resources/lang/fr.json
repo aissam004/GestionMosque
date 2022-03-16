@@ -2,9 +2,11 @@
   "create material": "Créer un matériel",
   "serialnumber": "Numéro de série",
   "marque":"Marque",
-  "select marque" : "Selectionez la marque ...",
+  "select marque" : "Sélectionnez la marque ...",
   "type" : "Type",
-  "select type":"Selectionez le type ...",
+  "select type":"Sélectionnez le type ...",
   "modele" : "Modèle",
-  "select modele" :"Selectionez le modèle ..."
+  "select modele" :"Sélectionnez le modèle ...",
+  "aucun modele trouvé":"Aucun modèle trouvé !!",
+  "save":"Enregistrez"
 }

@@ -41,7 +41,16 @@ class MaterielController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'serialnumber'=> 'required','max:200','unique:materiels',
+            'modele' => 'required','exists:App\Models\Modele,id'
+        ]);
+
+        Materiel::create([
+            'serialnumber'=>$request->serialnumber,
+            'modele_id'=>$request->modele]);
+            dd("ok");
+        redirect(route('materiels.create'));
     }
 
     /**

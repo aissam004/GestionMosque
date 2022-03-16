@@ -9,6 +9,7 @@ class Materiel extends Model
 {
     use HasFactory;
     protected $guarded=[];
+
     public function modele(){
         return $this->belongsTo(Modele::class);
     }
@@ -18,4 +19,5 @@ class Materiel extends Model
     public function etat(){
         return $this->belongsTo(Etat::class);
     }
+    
 }

@@ -9,7 +9,9 @@
     "marque": "brand",
     "select marque" : "Select the brand ...",
     "type" : "Type",
-    "select type":"select type ...",
+    "select type":"Select type ...",
     "modele" : "Model",
-  "select modele" :"Select model ..."
+  "select modele" :"Select model ...",
+  "aucun modele trouvé":"No model found !!",
+  "save":"Save"
 }

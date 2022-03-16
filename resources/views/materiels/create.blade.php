@@ -7,8 +7,9 @@
     </x-slot>
 
 <div class="container-fluid col-md-8">
-    <form action="{{route('materiels.store')}}" method="post">
-        <x-adminlte-input type="text"  name="serialnumber" label='{{ __("serialnumber") }}'
+    <form action="{{route('materiels.store')}}" method="post" >
+        @csrf
+        <x-adminlte-input type="text"  name="serialnumber" label='{{ __("serialnumber") }}' value="{{ old('serialnumber') }}"
              placeholder='{{ __("serialnumber") }}' label-class="text-lightblue" required maxlength=100>
             <x-slot name="prependSlot">
                 <div class="input-group-text">
@@ -19,12 +20,9 @@
 
         </x-adminlte-input>
 
+        <livewire:modeles >
 
-        <livewire:modeles />
-
-
-
-
+        <x-adminlte-button  type="submit" label="{{ __('save') }}" theme="success" icon="fas fa-lg fa-save"/>
 
     </form>
 
