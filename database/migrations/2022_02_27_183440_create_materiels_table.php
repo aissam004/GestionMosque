@@ -18,7 +18,7 @@ return new class extends Migration
     {
         Schema::create('materiels', function (Blueprint $table) {
             $table->id();
-            $table->string('serialnumber',100);
+            $table->string('serialnumber',100)->unique();
             $table->foreignIdFor(Modele::class)->nullable();
             $table->foreignIdFor(Attribution::class)->nullable();
             $table->foreignIdFor(Etat::class)->nullable();

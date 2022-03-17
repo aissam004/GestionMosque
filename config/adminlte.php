@@ -246,12 +246,17 @@ return [
             'url'  => 'admin/blog',
             'can'  => 'manage-blog'
         ],
+
+        ['header' => 'MATERIEL'],
         [
-            'text'        => 'pages',
-            'route'         => 'adminLte',
-            'icon'        => 'far fa-fw fa-file',
-            'label'       => 4,
-            'label_color' => 'success'
+            'text'        => "Liste matériels",
+            'route'         => 'materiels.index',
+            'icon'        => 'fa fa-list'
+        ],
+        [
+            'text'        => "Enregistrement matériel",
+            'route'         => 'materiels.create',
+            'icon'        => 'fas fa-lg fa-save'
         ],
         ['header' => 'account_settings'],
 

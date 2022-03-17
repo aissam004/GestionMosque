@@ -21,4 +21,5 @@
 @stop
 @section('js')
     @livewireScripts
+    @stack('scripts')
 @stop

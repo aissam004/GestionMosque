@@ -16,7 +16,7 @@ class Modeles extends Component
     public $marque_id;
     public $type_id;
     public $modele_id;
-    
+
 
     public function render()
     {
@@ -27,6 +27,6 @@ class Modeles extends Component
 
         return view('livewire.modeles');
     }
-
+   
 
 }

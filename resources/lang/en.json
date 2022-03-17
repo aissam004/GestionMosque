@@ -13,5 +13,6 @@
     "modele" : "Model",
   "select modele" :"Select model ...",
   "aucun modele trouvé":"No model found !!",
-  "save":"Save"
+  "modify material": "Modify material",
+  "materials":"material|materials"
 }

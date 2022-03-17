@@ -41,16 +41,17 @@ class MaterielController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'serialnumber'=> 'required','max:200','unique:materiels',
-            'modele' => 'required','exists:App\Models\Modele,id'
+
+        $validation=$request->validate([
+            'serialnumber'=> ['required','max:200','unique:materiels'],
+            'modele' => ['required','exists:App\Models\Modele,id']
         ]);
 
         Materiel::create([
             'serialnumber'=>$request->serialnumber,
             'modele_id'=>$request->modele]);
-            dd("ok");
-        redirect(route('materiels.create'));
+
+        return redirect()->route('materiels.create');
     }
 
     /**
@@ -72,7 +73,7 @@ class MaterielController extends Controller
      */
     public function edit(Materiel $materiel)
     {
-        //
+        return view('materiels.create',compact("materiel"));
     }
 
     /**
@@ -84,7 +85,17 @@ class MaterielController extends Controller
      */
     public function update(Request $request, Materiel $materiel)
     {
-        //
+
+        $validation=$request->validate([
+            'serialnumber'=> ['required','max:200','unique:materiels,serialnumber,'.$materiel->id],
+            'modele' => ['required','exists:App\Models\Modele,id']
+        ]);
+
+        $materiel->update([
+            'serialnumber'=>$request->serialnumber,
+            'modele_id'=>$request->modele]);
+
+        return redirect()->route('materiels.edit',$materiel);
     }
 
     /**
