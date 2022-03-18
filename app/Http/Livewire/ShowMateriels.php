@@ -14,8 +14,8 @@ use Mediconesystems\LivewireDatatables\Http\Livewire\LivewireDatatable;
 class ShowMateriels extends LivewireDatatable
 {
     public $model = Materiel::class;
-    public $serialNumberEditable=0;
-    public $beforeTableSlot="livewire.switch";
+    public $serialNumberEditable = 0;
+    public $afterTableSlot = "livewire.switch";
 
     public function columns()
     {
@@ -24,8 +24,11 @@ class ShowMateriels extends LivewireDatatable
             Column::name('modele.type.title')
                 ->label(__('Type'))
                 ->alignCenter()
-                ->filterable(Type::pluck('title')),
+                ->filterable(Type::pluck('title'))
+                ->sortBy('id')
+                ->defaultSort('asc'),
             Column::name('serialnumber')
+                ->searchable()
                 ->alignCenter()
                 ->label(__('N° de série'))
                 ->filterable()
@@ -45,5 +48,4 @@ class ShowMateriels extends LivewireDatatable
 
         ];
     }
-
 }

@@ -8,8 +8,8 @@
 
 @section('css')
     @livewireStyles
-    <link rel="stylesheet" href="{{ mix('css/app.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/prism.css') }}">
+    
+    @stack('cssFile')
 @stop
 @section('content')
 
@@ -24,6 +24,6 @@
 @section('js')
     @livewireScripts
     <script defer src="{{ mix('js/app.js') }}"></script>
-    <script src="{{ asset('js/prism.js') }}"></script>
+
     @stack('scripts')
 @stop
