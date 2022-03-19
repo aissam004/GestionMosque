@@ -258,6 +258,17 @@ return [
             'route'         => 'materiels.create',
             'icon'        => 'fas fa-lg fa-save'
         ],
+        ['header' => 'COMMANDES'],
+        [
+            'text'        => "Liste commandes",
+           
+            'icon'        => 'fa fa-list'
+        ],
+        [
+            'text'        => "Enregistrement commande",
+            'route'         => 'commandes.create',
+            'icon'        => 'fas fa-lg fa-save'
+        ],
         ['header' => 'account_settings'],
 
         [

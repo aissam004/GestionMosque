@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommandeController;
 use App\Http\Controllers\MaterielController;
 
 use Illuminate\Support\Facades\Route;
@@ -17,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::resource('materiels',MaterielController::class);
-
+Route::resource('commandes',CommandeController::class);
 
 
 

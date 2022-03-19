@@ -1277,9 +1277,10 @@ function queueJob(job) {
   queueFlush();
 }
 function dequeueJob(job) {
-  let index = queue.indexOf(job);
-  if (index !== -1)
+  const index = queue.indexOf(job);
+  if (index !== -1) {
     queue.splice(index, 1);
+  }
 }
 function queueFlush() {
   if (!flushing && !flushPending) {
@@ -1354,15 +1355,8 @@ var onElAddeds = [];
 function onElAdded(callback) {
   onElAddeds.push(callback);
 }
-function onElRemoved(el, callback) {
-  if (typeof callback === "function") {
-    if (!el._x_cleanups)
-      el._x_cleanups = [];
-    el._x_cleanups.push(callback);
-  } else {
-    callback = el;
-    onElRemoveds.push(callback);
-  }
+function onElRemoved(callback) {
+  onElRemoveds.push(callback);
 }
 function onAttributesAdded(callback) {
   onAttributeAddeds.push(callback);
@@ -1479,10 +1473,6 @@ function onMutate(mutations) {
     if (addedNodes.includes(node))
       continue;
     onElRemoveds.forEach((i) => i(node));
-    if (node._x_cleanups) {
-      while (node._x_cleanups.length)
-        node._x_cleanups.pop()();
-    }
   }
   addedNodes.forEach((node) => {
     node._x_ignoreSelf = true;
@@ -1657,10 +1647,7 @@ function injectMagics(obj, el) {
   Object.entries(magics).forEach(([name, callback]) => {
     Object.defineProperty(obj, `$${name}`, {
       get() {
-        let [utilities, cleanup] = getElementBoundUtilities(el);
-        utilities = {interceptor, ...utilities};
-        onElRemoved(el, cleanup);
-        return callback(el, utilities);
+        return callback(el, {Alpine: alpine_default, interceptor});
       },
       enumerable: false
     });
@@ -1811,7 +1798,10 @@ function deferHandlingDirectives(callback) {
   callback(flushHandlers);
   stopDeferring();
 }
-function getElementBoundUtilities(el) {
+function getDirectiveHandler(el, directive2) {
+  let noop = () => {
+  };
+  let handler3 = directiveHandlers[directive2.type] || noop;
   let cleanups = [];
   let cleanup = (callback) => cleanups.push(callback);
   let [effect3, cleanupEffect] = elementBoundEffect(el);
@@ -1824,14 +1814,7 @@ function getElementBoundUtilities(el) {
     evaluate: evaluate.bind(evaluate, el)
   };
   let doCleanup = () => cleanups.forEach((i) => i());
-  return [utilities, doCleanup];
-}
-function getDirectiveHandler(el, directive2) {
-  let noop = () => {
-  };
-  let handler3 = directiveHandlers[directive2.type] || noop;
-  let [utilities, cleanup] = getElementBoundUtilities(el);
-  onAttributeRemoved(el, directive2.original, cleanup);
+  onAttributeRemoved(el, directive2.original, doCleanup);
   let fullHandler = () => {
     if (el._x_ignore || el._x_ignoreSelf)
       return;
@@ -1839,7 +1822,7 @@ function getDirectiveHandler(el, directive2) {
     handler3 = handler3.bind(handler3, el, directive2, utilities);
     isDeferringHandlers ? directiveHandlerStacks.get(currentHandlerStackKey).push(handler3) : handler3();
   };
-  fullHandler.runCleanups = cleanup;
+  fullHandler.runCleanups = doCleanup;
   return fullHandler;
 }
 var startingWith = (subject, replacement) => ({name, value}) => {
@@ -2673,7 +2656,7 @@ var Alpine = {
   get raw() {
     return raw;
   },
-  version: "3.9.1",
+  version: "3.9.0",
   flushAndStopDeferringMutations,
   disableEffectScheduling,
   setReactivityEngine,
@@ -2714,7 +2697,7 @@ var Alpine = {
 var alpine_default = Alpine;
 
 // packages/alpinejs/src/index.js
-var import_reactivity8 = __toModule(require_reactivity());
+var import_reactivity9 = __toModule(require_reactivity());
 
 // packages/alpinejs/src/magics/$nextTick.js
 magic("nextTick", () => nextTick);
@@ -2723,11 +2706,11 @@ magic("nextTick", () => nextTick);
 magic("dispatch", (el) => dispatch.bind(dispatch, el));
 
 // packages/alpinejs/src/magics/$watch.js
-magic("watch", (el, {evaluateLater: evaluateLater2, effect: effect3}) => (key, callback) => {
-  let evaluate2 = evaluateLater2(key);
+magic("watch", (el) => (key, callback) => {
+  let evaluate2 = evaluateLater(el, key);
   let firstTime = true;
   let oldValue;
-  effect3(() => evaluate2((value) => {
+  effect(() => evaluate2((value) => {
     JSON.stringify(value);
     if (!firstTime) {
       queueMicrotask(() => {
@@ -3095,11 +3078,11 @@ directive("cloak", (el) => queueMicrotask(() => mutateDom(() => el.removeAttribu
 
 // packages/alpinejs/src/directives/x-init.js
 addInitSelector(() => `[${prefix("init")}]`);
-directive("init", skipDuringClone((el, {expression}, {evaluate: evaluate2}) => {
+directive("init", skipDuringClone((el, {expression}) => {
   if (typeof expression === "string") {
-    return !!expression.trim() && evaluate2(expression, {}, false);
+    return !!expression.trim() && evaluate(el, expression, {}, false);
   }
-  return evaluate2(expression, {}, false);
+  return evaluate(el, expression, {}, false);
 }));
 
 // packages/alpinejs/src/directives/x-text.js
@@ -3463,7 +3446,7 @@ directive("on", skipDuringClone((el, {value, modifiers, expression}, {cleanup}) 
 
 // packages/alpinejs/src/index.js
 alpine_default.setEvaluator(normalEvaluator);
-alpine_default.setReactivityEngine({reactive: import_reactivity8.reactive, effect: import_reactivity8.effect, release: import_reactivity8.stop, raw: import_reactivity8.toRaw});
+alpine_default.setReactivityEngine({reactive: import_reactivity9.reactive, effect: import_reactivity9.effect, release: import_reactivity9.stop, raw: import_reactivity9.toRaw});
 var src_default = alpine_default;
 
 // packages/alpinejs/builds/module.js
@@ -5643,6 +5626,36 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 window.Alpine = alpinejs__WEBPACK_IMPORTED_MODULE_0__["default"];
 alpinejs__WEBPACK_IMPORTED_MODULE_0__["default"].start();
 
+__webpack_require__(/*! ./dynamic-form */ "./resources/js/dynamic-form.js");
+
+var classOfOptionsNotToDuplicate = "select-options";
+var optionsToRemove = [];
+var dynamic_form = $("#dynamic_form").dynamicForm("#dynamic_form", "#plus", "#minus", {
+  // the maximum number of form fields
+  limit: 10,
+  // prefix
+  formPrefix: 'dynamic',
+  // normalize all fields
+  // ideal for server side dulication
+  normalizeFullForm: false,
+  afterClone: function afterClone(clone) {
+    optionsToRemove.push($("." + classOfOptionsNotToDuplicate).last().find("option:selected").val());
+    console.log($("." + classOfOptionsNotToDuplicate).last().prop('readOnly', true));
+    clone.find("." + classOfOptionsNotToDuplicate + " option").each(function () {
+      if (jQuery.inArray($(this).val(), optionsToRemove) != -1) {
+        $(this).remove();
+      }
+    });
+    clone.change(function () {
+      alert("Handler for .change() called.");
+    });
+  },
+  // color effects
+  duration: 3000,
+  // JSON data which will prefill the form
+  data: {}
+});
+
 /***/ }),
 
 /***/ "./resources/js/bootstrap.js":
@@ -5673,6 +5686,588 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     forceTLS: true
 // });
+
+/***/ }),
+
+/***/ "./resources/js/dynamic-form.js":
+/*!**************************************!*\
+  !*** ./resources/js/dynamic-form.js ***!
+  \**************************************/
+/***/ (() => {
+
+/**
+ * @copyright
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Stephane Roucheray
+ * @see Plugin Page   : http://code.google.com/p/jquery-dynamic-form/
+ * @see Author's Blog : http://sroucheray.org
+ * @see Follow author : http://twitter.com/sroucheray
+ * @extends jQuery (requires at version >= 1.4)
+ * @version 1.0.3
+ */
+(function ($) {
+  /**
+   * @param {String} plusSelector HTML element serving the duplication when clicking on it
+   * @param {String} minusSelector HTML element deleting the cloned form element
+   * @param {Object} options Optional object, can contain any of the parameters below :
+   *     limit      {Number}   : maximum number of duplicate fields authorized
+   *     formPrefix {String}   : the prefix used to identify a form (if not defined will use normalized source selector)
+   *     afterClone {Function} : a callback function called as soon as a duplication is done,
+   *       this is useful for custom insertion (you can insert the duplicate anywhere in the DOM),
+   *       inserting specific validation on cloned field
+   *       - this function will be passed the cloned element as a unique parameter
+   *       - return false if the cloned element should not be inserted
+   *     normalizeFullForm {Boolean} : normalize all fields in the form (even outside the template) for better server side script handling (default true)
+   *
+   *     createColor {String} : color effect when duplicating (requires jQuery UI Effects module)
+   *     removeColor {String} : color effect when removing duplicate (idem)
+   *     duration    {Number} : color effect duration (idem)
+   *
+   *     data        {Object} : A JSON based representation of the data which will prefill the form (equivalent of the inject method)
+   *
+   */
+  $.fn.dynamicForm = function (selectedTarget, plusSelector, minusSelector, options) {
+    var _source$selector;
+
+    var source = $(this),
+        minus,
+        plus,
+        template,
+        formFields = "input, checkbox, select, textarea,_token",
+        clones = [],
+        defaults = {
+      duration: 1000,
+      normalizeFullForm: true,
+      isSubDynamicForm: false
+    },
+        subDynamicForm = [],
+        subDynamicIndex = [],
+        index = 0,
+        formPrefix; // Set plus and minus elements within sub dynamic form clones
+
+    if (options.internalSubDynamicForm) {
+      minus = $(options.internalContainer).find(minusSelector);
+      plus = $(options.internalContainer).find(plusSelector);
+    } else {
+      //Set normal plus an minus element
+      minus = $(minusSelector);
+      plus = $(plusSelector);
+    } // Extend default options with those provided
+
+
+    options = $.extend(defaults, options); //Set the form prefix
+
+    formPrefix = options.formPrefix || ((_source$selector = source.selector) === null || _source$selector === void 0 ? void 0 : _source$selector.replace(/\W/g, ""));
+    /**
+     * Clone the form template
+     */
+
+    function cloneTemplate(disableEffect) {
+      var clone, callBackReturn;
+      clone = template.cloneWithAttribut(true);
+
+      if (typeof options.afterClone === "function") {
+        callBackReturn = options.afterClone(clone);
+      }
+
+      if (callBackReturn || typeof callBackReturn == "undefined") {
+        clone.insertAfter(clones[clones.length - 1] || source);
+      }
+
+      clone.getSource = function () {
+        return source;
+      };
+      /* Normalize template id attribute */
+
+
+      if (clone.attr("id")) {
+        clone.attr("id", clone.attr("id") + clones.length);
+      }
+
+      if (clone.effect && options.createColor && !disableEffect) {
+        clone.effect("highlight", {
+          color: options.createColor
+        }, options.duration);
+      }
+
+      if (clones.length === 0) {
+        source.find(minusSelector).show();
+      }
+
+      return clone;
+    }
+    /**
+     * On cloning make the form under the clone dynamic
+     * @param {Object} clone
+     */
+
+
+    function dynamiseSubClones(clone) {
+      $(subDynamicForm).each(function () {
+        var plus = this.getPlusSelector(),
+            minus = this.getMinusSelector(),
+            options = this.getOptions(),
+            selector = this.selector;
+        clone.find(this.selector).each(function () {
+          options = $.extend({
+            internalSubDynamicForm: true,
+            internalContainer: clone,
+            isInAClone: true,
+            outerCloneIndex: clones.length,
+            selector: selector
+          }, options);
+          $(this).dynamicForm(plus, minus, options);
+        });
+      });
+    }
+    /**
+     * Handle click on plus when plus element is inside the template
+     * @param {Object} event
+     */
+
+
+    function innerClickOnPlus(event, extraParams) {
+      var clone,
+          currentClone = clones[clones.length - 1] || source;
+      event.preventDefault();
+      subDynamicIndex.push(index + 1);
+      index = subDynamicIndex[subDynamicIndex.length - 1];
+      currentClone.find(minusSelector).show();
+      currentClone.find(plusSelector).hide();
+
+      if (clones.length === 0) {
+        source.find(minusSelector).hide();
+      }
+
+      clone = cloneTemplate(extraParams);
+      plus = clone.find(plusSelector);
+      minus = clone.find(minusSelector);
+      minus.get(0).removableClone = clone;
+      minus.click(innerClickOnMinus);
+
+      if (options.limit && options.limit - 2 > clones.length) {
+        plus.show();
+        minus.show();
+      } else {
+        plus.hide();
+        minus.show();
+      }
+
+      clones.push(clone);
+      normalizeClone(clone, index);
+      dynamiseSubClones(clone);
+    }
+    /**
+     * Handle click on plus when plus element is outside the template
+     * @param {Object} event
+     */
+
+
+    function outerClickOnPlus(event, extraParams) {
+      var clone;
+      event.preventDefault();
+      /* On first add, normalize source */
+
+      if (clones.length === 0) {
+        minus.show();
+      }
+
+      clone = cloneTemplate(extraParams);
+
+      if (options.limit && options.limit - 3 < clones.length) {
+        plus.hide();
+      }
+
+      clones.push(clone);
+      normalizeClone(clone, clones.length);
+      dynamiseSubClones(clone);
+    }
+    /**
+     * Handle click on minus when minus element is inside the template
+     * @param {Object} event
+     */
+
+
+    function innerClickOnMinus(event) {
+      event.preventDefault();
+
+      if (this.removableClone.effect && options.removeColor) {
+        that = this;
+        this.removableClone.effect("highlight", {
+          color: options.removeColor
+        }, options.duration, function () {
+          that.removableClone.remove();
+        });
+      } else {
+        this.removableClone.remove();
+      }
+
+      removableCloneId = this.removableClone.attr('id');
+      checkId = $.inArray(parseInt(removableCloneId[removableCloneId.length - 1]), subDynamicIndex);
+      subDynamicIndex.splice(checkId, 1);
+      clones.splice($.inArray(this.removableClone, clones), 1);
+
+      if ($(selectedTarget).length) {
+        if (clones.length === 0) {
+          source.find(plusSelector).show();
+          source.find(minusSelector).hide();
+        } else {
+          clones[clones.length - 1].find(plusSelector).show();
+        }
+      } else {
+        if (clones.length === 1) {
+          clones[0].find(plusSelector).show();
+          clones[0].find(minusSelector).hide();
+        } else {
+          clones[clones.length - 1].find(plusSelector).show();
+        }
+      }
+    }
+    /**
+     * Handle click on minus when minus element is outside the template
+     * @param {Object} event
+     */
+
+
+    function outerClickOnMinus(event) {
+      event.preventDefault();
+      var clone = clones.pop();
+
+      if (clones.length >= 0) {
+        if (clone.effect && options.removeColor) {
+          that = this;
+          clone.effect("highlight", {
+            color: options.removeColor,
+            mode: "hide"
+          }, options.duration, function () {
+            clone.remove();
+          });
+        } else {
+          clone.remove();
+        }
+      }
+
+      if (clones.length === 0) {
+        minus.hide();
+      }
+
+      plus.show();
+    }
+    /**
+     * Normalize ids and name attributes of all children forms fields of an element
+     * @param {Object} elmnt
+     */
+
+
+    function normalizeSource(elmnt, prefix, index) {
+      elmnt.find(formFields).each(function () {
+        var that = $(this),
+            nameAttr = that.attr("name"),
+            origNameAttr = that.attr("origname"),
+            idAttr = that.attr("id"),
+            origId = that.attr("origid");
+        /* Normalize field name attributes */
+
+        if (!nameAttr) {//TODO: that.attr("name", formPrefix+"form"+index + "["+index+"]");
+        }
+
+        if (origNameAttr) {
+          //This is a subform (thus prefix is not the same as below)
+          that.attr("name", prefix + "[" + index + "]" + "[" + origNameAttr + "]");
+        } else {
+          //This is the main form
+          that.attr("origname", nameAttr); //This is the main normalization
+
+          that.attr("name", prefix + "[" + index + "]" + "[" + nameAttr + "]");
+        }
+        /* Normalize field id attributes */
+
+
+        if (idAttr) {
+          /* Normalize attached label */
+          that.attr("origid", idAttr);
+          $("label[for='" + idAttr + "']").each(function () {
+            $(this).attr("origfor", idAttr);
+            $(this).attr("for", idAttr + index);
+          });
+          that.attr("id", idAttr + index);
+        }
+      });
+    }
+
+    function normalizeClone(elmnt, index) {
+      var match,
+          matchRegEx = /(.+\[[^\[\]]+\]\[)(\d+)(\]\[[^\[\]]+\])$/;
+      elmnt.find(formFields).each(function () {
+        var that = $(this),
+            nameAttr = that.attr("name"),
+            origNameAttr = that.attr("origname"),
+            idAttr = that.attr("id"),
+            newIdAttr = idAttr.slice(0, -1) + index,
+            match = matchRegEx.exec(nameAttr);
+        that.attr("name", match[1] + index + match[3]);
+
+        if (idAttr) {
+          that.attr("origid", idAttr);
+          elmnt.find("label[for='" + idAttr + "']").each(function () {
+            $(this).attr("for", newIdAttr);
+          });
+          that.attr("id", newIdAttr);
+        }
+      });
+    }
+
+    function normalizeSubClone(elmnt, formPrefix, index) {
+      var match,
+          matchRegEx = /(.+)\[([^\[\]]+)\]$/;
+      elmnt.find(formFields).each(function () {
+        var that = $(this),
+            nameAttr = that.attr("name"),
+            idAttr = that.attr("id"),
+            newIdAttr = idAttr + index,
+            match = matchRegEx.exec(nameAttr);
+        that.attr("name", match[1] + "[" + formPrefix + "]" + "[" + index + "]" + "[" + match[2] + "]");
+
+        if (idAttr) {
+          that.attr("origid", idAttr);
+          elmnt.find("label[for='" + idAttr + "']").each(function () {
+            $(this).attr("for", newIdAttr);
+          });
+          that.attr("id", newIdAttr);
+        }
+      });
+    } //Add a function to enable sub dynamic forms to register themselves
+
+
+    source.each(function () {
+      $.extend(this, {
+        addSubDynamicForm: function addSubDynamicForm(dynamicForm) {
+          subDynamicForm.push(dynamicForm);
+        },
+        getFormPrefix: function getFormPrefix() {
+          return formPrefix;
+        },
+        getSource: function getSource() {
+          return source;
+        }
+      });
+    }); //Check if this dynamic form is a sub dynamic form
+
+    var isMainForm = true;
+    $(this).parentsUntil("body").each(function () {
+      if ($.isFunction(this.addSubDynamicForm) && !options.isSubDynamicForm) {
+        isMainForm = false;
+        options.isSubDynamicForm = true;
+        var suboptions = $.extend({
+          internalSubDynamicForm: true,
+          internalContainer: this
+        }, options);
+        this.addSubDynamicForm(source);
+        formPrefix = this.getFormPrefix() + "[0][" + formPrefix + "]";
+        return false;
+      }
+    });
+
+    if (isMainForm && !options.isInAClone) {
+      //Main form name and prefix for the main form are the same for now
+      formPrefix = formPrefix + "[" + formPrefix + "]";
+    }
+
+    if (!options.isInAClone) {
+      normalizeSource(source, formPrefix, 0);
+    } else {
+      var _options$selector;
+
+      formPrefix = formPrefix || ((_options$selector = options.selector) === null || _options$selector === void 0 ? void 0 : _options$selector.replace(/\W/g, "")); //Main form name and prefix for the main form are the same for now
+
+      normalizeSubClone(source, formPrefix, 0);
+    }
+
+    if (isMainForm && options.normalizeFullForm && !options.isInAClone) {
+      //Normalize all forms outside duplicated template in order to ease server-side parsing
+      $(this).parentsUntil("form").each(function () {
+        var theForm = $(this).parent().get(0);
+        $(theForm).find(formFields).filter("[type!=submit]").each(function () {
+          var that = $(this),
+              nameAttr = that.attr("name"),
+              origNameAttr = that.attr("origname"),
+              idAttr = that.attr("id"),
+              origId = that.attr("origid");
+
+          if (!origNameAttr) {
+            // Normalize field name attributes
+            if (!nameAttr) {//TODO: that.attr("name", formPrefix+"form"+index + "["+index+"]");
+            } //It's the main form
+
+
+            that.attr("origname", nameAttr); //This is the main normalization
+
+            that.attr("name", formPrefix + "[" + nameAttr + "]");
+          }
+        });
+      });
+    }
+
+    isPlusDescendentOfTemplate = source.find("*").filter(function () {
+      return this == plus.get(0);
+    });
+    isPlusDescendentOfTemplate = isPlusDescendentOfTemplate.length > 0 ? true : false;
+    /* Hide minus element */
+
+    minus.hide();
+    /* If plus element is within the template */
+
+    if (isPlusDescendentOfTemplate) {
+      /* Handle click on plus */
+      plus.click(innerClickOnPlus);
+    } else {
+      /* If plus element is out of the template */
+
+      /* Handle click on plus */
+      plus.click(outerClickOnPlus);
+      /* Handle click on minus */
+
+      minus.click(outerClickOnMinus);
+    }
+
+    $.extend(source, {
+      getPlus: function getPlus() {
+        return plus;
+      },
+      getPlusSelector: function getPlusSelector() {
+        return plusSelector;
+      },
+      getMinus: function getMinus() {
+        return minus;
+      },
+      getMinusSelector: function getMinusSelector() {
+        return minusSelector;
+      },
+      getOptions: function getOptions() {
+        return options;
+      },
+      getClones: function getClones() {
+        var clonesAndSource = [source];
+        return clonesAndSource.concat(clones);
+      },
+      getSource: function getSource() {
+        return source;
+      },
+      inject: function inject(data) {
+        /**
+         * Fill data of each main dynamic form clones
+         * @param {Object} formIndex
+         * @param {Object} formValue
+         */
+        var z = 0;
+
+        function fillData(formIndex, formValue) {
+          //Loop over data form array (each item will match a specific clone)
+          var mainForm = this; //Shows required additional dynamic forms
+
+          if (formIndex > 0) {
+            index = formIndex - 1;
+            mainForm.getSource().getPlus().trigger("click", ["disableEffect"]);
+
+            if (z === 0) {
+              mainForm.get(0).getSource().remove();
+              mainForm.get(0).getSource().getClones()[1].find(minusSelector).hide();
+            }
+          }
+
+          var newArray = mainForm.get(0).getSource().getClones();
+          var changeArray = [];
+
+          for (var i = 0; i < newArray.length; i++) {
+            $.each(data, function (key, value) {
+              changeArray[key] = newArray[i];
+            });
+          }
+
+          var clone = changeArray[formIndex];
+          $.each(formValue, function (index, value) {
+            if ($.isArray(value)) {
+              mainForm = clone.find("#" + index);
+
+              if (typeof mainForm.get(0).getSource === "function") {
+                $.each(value, $.proxy(fillData, mainForm.get(0).getSource()));
+              }
+            } else {
+              var formElements = changeArray[formIndex].find("[origname='" + index + "']");
+
+              if (formElements) {
+                if (formElements.get(0).tagName.toLowerCase() == "input") {
+                  /* Fill in radio input */
+                  if (formElements.attr("type") == "radio") {
+                    formElements.filter("[value='" + value + "']").attr("checked", "checked");
+                  } else if (formElements.attr("type") == "checkbox") {
+                    /* Fill in checkbox input */
+                    formElements.attr("checked", "checked");
+                  } else {
+                    formElements.attr("value", value);
+                  }
+                } else if (formElements.get(0).tagName.toLowerCase() == "textarea") {
+                  /* Fill in textarea */
+                  formElements.text(value);
+                } else if (formElements.get(0).tagName.toLowerCase() == "select") {
+                  /* Fill in select */
+                  $(formElements.get(0)).find("option").each(function () {
+                    if ($(this).text() == value || $(this).attr("value") == value) {
+                      $(this).attr("selected", "selected");
+                    }
+                  });
+                }
+              }
+            }
+          });
+          z++;
+        } //Loop over each form
+
+
+        $.each(data, $.proxy(fillData, source));
+      }
+    });
+    template = source.cloneWithAttribut(true);
+
+    if (options.data) {
+      source.inject(options.data);
+    }
+
+    return source;
+  };
+  /**
+   * jQuery original clone method decorated in order to fix an IE < 8 issue
+   * where attributs especially name are not copied
+   */
+
+
+  jQuery.fn.cloneWithAttribut = function (withDataAndEvents) {
+    if (jQuery.support.noCloneEvent) {
+      return $(this).clone(withDataAndEvents);
+    } else {
+      $(this).find("*").each(function () {
+        $(this).data("name", $(this).attr("name"));
+      });
+      var clone = $(this).clone(withDataAndEvents);
+      clone.find("*").each(function () {
+        $(this).attr("name", $(this).data("name"));
+      });
+      return clone;
+    }
+  };
+})(jQuery);
 
 /***/ }),
 
