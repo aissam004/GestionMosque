@@ -5620,7 +5620,10 @@ module.exports = {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var alpinejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! alpinejs */ "./node_modules/alpinejs/dist/module.esm.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_1__);
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
+
 
 
 window.Alpine = alpinejs__WEBPACK_IMPORTED_MODULE_0__["default"];
@@ -5640,15 +5643,23 @@ var dynamic_form = $("#dynamic_form").dynamicForm("#dynamic_form", "#plus", "#mi
   normalizeFullForm: false,
   afterClone: function afterClone(clone) {
     optionsToRemove.push($("." + classOfOptionsNotToDuplicate).last().find("option:selected").val());
-    console.log($("." + classOfOptionsNotToDuplicate).last().prop('readOnly', true));
     clone.find("." + classOfOptionsNotToDuplicate + " option").each(function () {
       if (jQuery.inArray($(this).val(), optionsToRemove) != -1) {
         $(this).remove();
       }
     });
-    clone.change(function () {
-      alert("Handler for .change() called.");
-    });
+    /*
+            clone.find("#minus").click(function() {
+                console.log($(clone).nextAll().remove());
+    
+            });
+    */
+
+    /*
+    clone.find("."+classOfOptionsNotToDuplicate).change(function() {
+        console.log($(clone).nextAll().remove());
+     });
+    */
   },
   // color effects
   duration: 3000,
@@ -23752,6 +23763,18 @@ process.umask = function() { return 0; };
 /******/ 				}
 /******/ 			}
 /******/ 			return result;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => (module['default']) :
+/******/ 				() => (module);
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
 /******/ 		};
 /******/ 	})();
 /******/ 	

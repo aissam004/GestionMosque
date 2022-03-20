@@ -10,7 +10,7 @@
     </x-slot>
     <option  @if($type_id==null) selected @endif disabled value="null">{{ __('select type') }}</option>
     @foreach ($types as $type)
-    <option @if($type->id==$type_id) selected @endif  value="{{ $type->id }}" value=null>{{ $type->title }}</option>
+    <option @if($type->id==$type_id) selected @endif  value="{{ $type->id }}" >{{ $type->title }}</option>
     @endforeach
 </x-adminlte-select>
 </div>
@@ -41,7 +41,7 @@
                 <optgroup label="{{ __('aucun modele trouvé') }}"> </optgroup>
            @endif
 </x-adminlte-select>
-       
+
 @push('scripts')
     <script>
         $(document).ready(function() {

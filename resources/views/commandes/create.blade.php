@@ -9,45 +9,53 @@
         @endif
     </x-slot>
 
-    <div id="dynamic_form">
-        <div class="form-control">
-          <input type="text" name="p_name" id="p_name" placeholder="Enter Product Name">
-        </div>
-        <div class="form-control">
-            <select name="select" id="select" class="select-options" placeholder="Enter Product Name">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-            </select>
-          </div>
+    <div id="dynamic_form" class="container-fluid col-md-8">
+        <div class="row ">
+            <x-adminlte-select   name="type" label='{{ __("type") }}' class="select-options" label-class="text-lightblue " >
+                <x-slot name="prependSlot">
+                    <div class="input-group-text">
+                        <i class="fab fa-apple"></i>
+                    </div>
+                </x-slot>
+                <option   selected  disabled value="null">{{ __('select type') }}</option>
+                @foreach ($types as $type)
+                <option   value="{{ $type->id }}" >{{ $type->title }}</option>
+                @endforeach
+            </x-adminlte-select>
 
-        <div class="button-group">
-          <a href="javascript:void(0)" class="btn btn-primary" id="plus">Add More</a>
-          <a href="javascript:void(0)" class="btn btn-danger" id="minus">Remove</a>
+            <x-adminlte-input  type="number"  name="quantite" label='{{ __("quantite") }}'
+                placeholder='{{ __("quantite") }}' label-class="text-lightblue" fgroup-class="ml-2" maxlength=100 >
+
+               <x-slot name="prependSlot">
+                   <div class="input-group-text">
+                       <i class="fa fa-solid fa-barcode"></i>
+                   </div>
+
+               </x-slot>
+
+           </x-adminlte-input>
+
+           <x-adminlte-input  type="text"  name="obse" label='{{ __("quantite") }}'
+                placeholder='{{ __("quantite") }}' label-class="text-lightblue" fgroup-class="ml-2" maxlength=100 >
+
+               <x-slot name="prependSlot">
+                   <div class="input-group-text">
+                       <i class="fa fa-solid fa-barcode"></i>
+                   </div>
+
+               </x-slot>
+
+           </x-adminlte-input>
+
+        <div class="button-group ">
+
+            <x-adminlte-button id="plus" icon="fa fa-solid fa-plus " theme="primary" />
+            <x-adminlte-button id="minus" icon="fa fa-solid fa-minus" theme="danger" />
+
         </div>
+
     </div>
-
-
-
-    <form action="">
-        <p>
-          <span>add more</span>
-          <input type="text" placeholder="name">
-          <select class="removeDuplication">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-          </select>
-          <select>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-          </select>
-        </p>
-      </form>
+    </div>
 
 
 </x-admin-lte-layout>

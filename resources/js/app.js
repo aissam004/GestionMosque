@@ -1,6 +1,7 @@
 require('./bootstrap');
 
 import Alpine from 'alpinejs';
+import { cloneDeep } from 'lodash';
 
 window.Alpine = Alpine;
 
@@ -24,16 +25,25 @@ var dynamic_form =  $("#dynamic_form").dynamicForm("#dynamic_form","#plus", "#mi
     afterClone: function(clone){
 
         optionsToRemove.push($("."+classOfOptionsNotToDuplicate).last().find("option:selected").val());
-        console.log($("."+classOfOptionsNotToDuplicate).last().prop('readOnly', true));
+
 
         clone.find("."+classOfOptionsNotToDuplicate+" option").each(function() {
-            if (jQuery.inArray( $(this).val(),optionsToRemove)!=-1  ) {
+            if (jQuery.inArray( $(this).val(),optionsToRemove)!=-1) {
                 $(this).remove();
             }
         });
-        clone.change(function() {
-            alert( "Handler for .change() called." );
-          });
+/*
+        clone.find("#minus").click(function() {
+            console.log($(clone).nextAll().remove());
+
+        });
+*/
+        /*
+        clone.find("."+classOfOptionsNotToDuplicate).change(function() {
+            console.log($(clone).nextAll().remove());
+
+        });
+        */
 
     },
     // color effects
