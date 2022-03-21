@@ -410,7 +410,9 @@ $.fn.dynamicForm = function (selectedTarget, plusSelector, minusSelector, option
 
 					//This is the main normalization
 					that.attr("name", formPrefix+"["+nameAttr+"]");
+
 				}
+
 			});
 
 		});

@@ -18,9 +18,9 @@ return new class extends Migration
         Schema::create('commande_type', function (Blueprint $table) {
             $table->foreignIdFor(Commande::class)->constrained();
             $table->foreignIdFor(Type::class)->constrained();
-            $table->integer('quantite');
-            $table->integer('quantite_attribue');
-            $table->text('observation');
+            $table->integer('quantite')->nullable();
+            $table->integer('quantite_attribue')->nullable();
+            $table->text('observation')->nullable();
             $table->timestamps();
         });
     }

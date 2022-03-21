@@ -10,9 +10,9 @@ class Commande extends Model
     use HasFactory;
     protected $guarded=[];
     public function types(){
-        $this->belongsToMany(Type::class)->withPivot('quantite','quantite_attribue','observation');
+       return $this->belongsToMany(Type::class)->withPivot('quantite','quantite_attribue','observation');
     }
     public function attributions(){
-        $this->belongsToMany(Attribution::class)->withPivot('observation');
+        return $this->belongsToMany(Attribution::class)->withPivot('observation');
     }
 }

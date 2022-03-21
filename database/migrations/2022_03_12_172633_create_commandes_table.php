@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('commandes', function (Blueprint $table) {
             $table->id();
-            $table->string('reference',300);
-            $table->date('date');
+            $table->string('reference',300)->nullable();
+            $table->date('date')->nullable();
             $table->timestamps();
         });
     }

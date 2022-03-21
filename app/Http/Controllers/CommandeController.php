@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Commande;
 use App\Models\Type;
 use Illuminate\Http\Request;
 
@@ -36,7 +37,19 @@ class CommandeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $validate=$request->validate([
+            'dynamic.dynamic.*.type'=>'distinct:strict'
+        ]);
+        $data=array();
+        foreach($request->dynamic['dynamic'] as $value){
+            $data[$value["type"]]=$value;
+            unset($data[$value["type"]]["type"]);
+        }
+
+        $commande=Commande::create();
+        $commande->types()->sync($data);
+
     }
 
     /**
