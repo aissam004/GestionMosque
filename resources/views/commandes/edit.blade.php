@@ -20,7 +20,7 @@
 @endif
 <form  action="{{route('commandes.store')}}" method="post" class="container-fluid col-md-10">
     @csrf
-
+   
     <div id="dynamic_form" >
         <div class="row">
             <div class="col-lg-6">

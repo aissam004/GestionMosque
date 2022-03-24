@@ -43,7 +43,7 @@ class ShowMateriels extends LivewireDatatable
                 ->label(__('Marque'))
                 ->filterable(Marque::pluck('name')),
             Column::callback(['id'], function ($id) {
-                return view('table-actions', ['id' => $id]);
+                return view('table-actions', ['id' => $id,'racine'=>'materiels']);
             })->unsortable()
 
         ];

@@ -1,5 +1,5 @@
 <div class="flex space-x-1 justify-around">
-    <a href="{{ route('materiels.edit', [$id]) }}" target="_blank"
+    <a href="{{ route($racine.'.edit', [$id]) }}" target="_blank"
         class="p-1 text-teal-600 hover:bg-teal-600 hover:text-white rounded">
         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
             <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path>
@@ -9,7 +9,7 @@
         </svg>
     </a>
 
-    <a href="{{ route('materiels.edit', [$id]) }}">
+    <a href="{{ route($racine.'.edit', [$id]) }}">
         <button class="p-1 text-blue-600 hover:bg-blue-600 hover:text-white rounded">
             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                 <path

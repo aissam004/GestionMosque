@@ -16,10 +16,11 @@ return new class extends Migration
     public function up()
     {
         Schema::create('commande_type', function (Blueprint $table) {
+            $table->id();
             $table->foreignIdFor(Commande::class)->constrained();
             $table->foreignIdFor(Type::class)->constrained();
             $table->integer('quantite')->nullable();
-            $table->integer('quantite_attribue')->nullable();
+            $table->integer('quantite_attribue')->default(0);
             $table->text('observation')->nullable();
             $table->timestamps();
         });
