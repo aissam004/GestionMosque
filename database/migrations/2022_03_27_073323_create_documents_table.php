@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\Commande;
-use App\Models\Type;
+
+use App\Models\Structure;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,13 +15,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('commande_type', function (Blueprint $table) {
+        Schema::create('documents', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Commande::class)->constrained();
-            $table->foreignIdFor(Type::class)->constrained();
-            $table->integer('quantite')->nullable();
-            $table->integer('quantite_attribue')->nullable();
-            $table->text('observation')->nullable();
+            $table->string('reference',200);
+            $table->date('date');
+            $table->text('path');
+            $table->foreignIdFor(Structure::class);
             $table->timestamps();
         });
     }
@@ -33,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('commande_type');
+        Schema::dropIfExists('documents');
     }
 };

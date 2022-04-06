@@ -20,6 +20,7 @@ class ShowMateriels extends LivewireDatatable
     public function columns()
     {
         return [
+
             NumberColumn::name('id')->alignCenter(),
             Column::name('modele.type.title')
                 ->label(__('Type'))
@@ -43,7 +44,7 @@ class ShowMateriels extends LivewireDatatable
                 ->label(__('Marque'))
                 ->filterable(Marque::pluck('name')),
             Column::callback(['id'], function ($id) {
-                return view('table-actions', ['id' => $id]);
+                return view('materiels.table-actions', ['id' => $id]);
             })->unsortable()
 
         ];

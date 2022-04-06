@@ -260,8 +260,13 @@ return [
         ],
         ['header' => 'COMMANDES'],
         [
+            'text'  => "Liste commandes",
+            'route' => 'commandes.index',
+            'icon'  => 'fa fa-list'
+        ],
+        [
             'text'        => "Liste commandes",
-           
+
             'icon'        => 'fa fa-list'
         ],
         [

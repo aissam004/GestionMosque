@@ -15,7 +15,7 @@ class CommandeController extends Controller
      */
     public function index()
     {
-        //
+        return view('commandes.index');
     }
 
     /**
@@ -58,7 +58,7 @@ class CommandeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Commande $commande)
     {
         //
     }
@@ -69,9 +69,10 @@ class CommandeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Commande $commande)
     {
-        //
+        $types=Type::all();
+        return view('commandes.edit',compact("commande","types"));
     }
 
     /**
