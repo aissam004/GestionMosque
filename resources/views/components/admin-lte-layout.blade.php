@@ -8,7 +8,7 @@
 
 @section('css')
     @livewireStyles
-    
+
     @stack('cssFile')
 @stop
 @section('content')

@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Etat extends Model
+class Nature extends Model
 {
     use HasFactory;
-
-    public function materiels(){
-        return $this->hasMany(Materiel::class);
+    protected $guarded=[];
+    public function documents(){
+        return $this->hasMany(Document::class);
     }
 }

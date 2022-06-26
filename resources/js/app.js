@@ -6,8 +6,9 @@ import { cloneDeep } from 'lodash';
 window.Alpine = Alpine;
 
 Alpine.start();
-
+require('./pdfobject')
 require('./dynamic-form');
+
 var classOfOptionsNotToDuplicate="select-options";
 var optionsToRemove=[];
 
@@ -54,3 +55,6 @@ var dynamic_form =  $("#dynamic_form").dynamicForm("#dynamic_form","#plus", "#mi
     data: {}
 
 });
+
+
+

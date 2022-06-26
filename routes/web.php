@@ -1,8 +1,6 @@
 <?php
 
-
-use App\Http\Controllers\MaterielController;
-use App\Http\Controllers\CommandeController;
+use App\Http\Controllers\BoiteController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,8 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::resource('commandes',CommandeController::class);
-Route::resource('materiels',MaterielController::class);
+Route::resource('boites',BoiteController::class);
+
 
 
 

@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Commande;
-use App\Models\Type;
+use App\Models\Boite;
 use Illuminate\Http\Request;
 
-class CommandeController extends Controller
+class BoiteController extends Controller
 {
+
+   
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +16,8 @@ class CommandeController extends Controller
      */
     public function index()
     {
-        return view('commandes.index');
+
+        return view('boites.index');
     }
 
     /**
@@ -26,7 +28,7 @@ class CommandeController extends Controller
     public function create()
     {
 
-        return view('commandes.create',['types'=>Type::all()]);
+        return view('boites.create');
     }
 
     /**
@@ -38,17 +40,16 @@ class CommandeController extends Controller
     public function store(Request $request)
     {
 
-        $validate=$request->validate([
-            'dynamic.dynamic.*.type'=>'distinct:strict'
+        $validation=$request->validate([
+            'numero'=> ['required','unique:boites'],
+            'titre' => ['required']
         ]);
-        $data=array();
-        foreach($request->dynamic['dynamic'] as $value){
-            $data[$value["type"]]=$value;
-            unset($data[$value["type"]]["type"]);
-        }
 
-        $commande=Commande::create();
-        $commande->types()->sync($data);
+        $boite=Boite::create([
+            'numero'=>$request->numero,
+            'titre'=>$request->titre]);
+
+        return redirect()->route('boites.show',['boite' => $boite->id]);
 
     }
 
@@ -58,9 +59,10 @@ class CommandeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Commande $commande)
+    public function show(Boite $boite)
     {
-        //
+
+        return view('boites.show',compact(['boite']));
     }
 
     /**
@@ -69,10 +71,11 @@ class CommandeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Commande $commande)
+    public function edit(Boite $boite)
     {
-        $types=Type::all();
-        return view('commandes.edit',compact("commande","types"));
+
+
+        return view('boites.create',compact(['boite']));
     }
 
     /**
@@ -82,9 +85,18 @@ class CommandeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Boite $boite)
     {
-        //
+        $validation=$request->validate([
+            'numero'=> ['required','unique:boites,numero,'.$boite->id],
+            'titre' => ['required']
+        ]);
+
+        $boite->update([
+            'numero'=>$request->numero,
+            'titre'=>$request->titre]);
+
+        return redirect()->route('boites.edit',$boite);
     }
 
     /**

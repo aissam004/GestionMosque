@@ -1,7 +1,6 @@
 <?php
 
-use App\Models\Attribution;
-use App\Models\Commande;
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,9 +14,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('attribution_commande', function (Blueprint $table) {
-            $table->foreignIdFor(Attribution::class)->constrained();
-            $table->foreignIdFor(Commande::class)->constrained();
+        Schema::create('boites', function (Blueprint $table) {
+            $table->id();
+            $table->integer('numero');
+            $table->text('titre');
+            $table->foreignIdFor(User::class)->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('attribution_commande');
+        Schema::dropIfExists('boites');
     }
 };

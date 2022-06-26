@@ -8,14 +8,14 @@
 <x-admin-lte-layout>
     <x-slot name="header">
 
-        {{__("Liste des commandes")}}
+        {{__("Liste des boites")}}
 
     </x-slot>
 
 <div class="container-fluid">
 
 
-    <livewire:show-commandes
+    <livewire:index-boites
 
      hideable="select"
     exportable/>

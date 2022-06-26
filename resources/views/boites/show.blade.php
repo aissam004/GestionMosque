@@ -6,20 +6,21 @@
 <x-admin-lte-layout>
     <x-slot name="header">
 
-        {{__("modifier la commande")}}
+        {{__("Boite N°".$boite->numero.': "'.$boite->titre.' "')}}
 
     </x-slot>
 
 <div class="container-fluid">
 
 
-    <livewire:edit-commandes
 
-     hideable="select"
-    exportable
-    :commande="$commande"
-    :types="$types"
-    :commande_id="$commande->id" />
+    <livewire:show-boites
+    hideable="select"
+   
+   exportable
+   :boite="$boite"
+   />
+
 
 </div>
 
