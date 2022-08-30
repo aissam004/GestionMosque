@@ -5625,6 +5625,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 
+ //import Tags from './tags'
 
 window.Alpine = alpinejs__WEBPACK_IMPORTED_MODULE_0__["default"];
 alpinejs__WEBPACK_IMPORTED_MODULE_0__["default"].start();
@@ -5634,7 +5635,8 @@ __webpack_require__(/*! ./pdfobject */ "./resources/js/pdfobject.js");
 __webpack_require__(/*! ./dynamic-form */ "./resources/js/dynamic-form.js");
 
 var classOfOptionsNotToDuplicate = "select-options";
-var optionsToRemove = [];
+var optionsToRemove = []; //Tags.init("select[multiple].tags");
+
 var dynamic_form = $("#dynamic_form").dynamicForm("#dynamic_form", "#plus", "#minus", {
   // the maximum number of form fields
   limit: 10,
@@ -5667,6 +5669,18 @@ var dynamic_form = $("#dynamic_form").dynamicForm("#dynamic_form", "#plus", "#mi
   duration: 3000,
   // JSON data which will prefill the form
   data: {}
+});
+
+window.loadSelect2 = function () {
+  $('.tags').select2({
+    placeholder: "Selectionner multiple tags...",
+    tags: true
+  });
+};
+
+loadSelect2();
+window.livewire.on('loadSelect2Hydrate', function () {
+  loadSelect2();
 });
 
 /***/ }),

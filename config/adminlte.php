@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'title' => 'Gestion Archive',
+    'title' => 'Gestion Mosqué',
     'title_prefix' => '',
     'title_postfix' => '',
 
@@ -45,7 +45,7 @@ return [
     |
     */
 
-    'logo' => '<b>Parc</b> Informatique',
+    'logo' => 'مسجد بلال بن رباح',
     'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
@@ -85,7 +85,7 @@ return [
 
     'layout_topnav' => null,
     'layout_boxed' => null,
-    'layout_fixed_sidebar' => null,
+    'layout_fixed_sidebar' => true,
     'layout_fixed_navbar' => null,
     'layout_fixed_footer' => null,
     'layout_dark_mode' => null,
@@ -188,13 +188,14 @@ return [
     */
 
     'use_route_url' => true,
-    'dashboard_url' => '',
+    'dashboard_url' => 'index',
     'logout_url' => 'logout',
     'login_url' => 'login',
     'register_url' => 'register',
     'password_reset_url' => 'password/reset',
     'password_email_url' => 'password/email',
     'profile_url' => false,
+
 
     /*
     |--------------------------------------------------------------------------
@@ -226,7 +227,7 @@ return [
 
     'menu' => [
         // Navbar items:
-        [
+       /* [
             'type'         => 'navbar-search',
             'text'         => 'search',
             'topnav_right' => true,
@@ -235,25 +236,40 @@ return [
             'type'         => 'fullscreen-widget',
             'topnav_right' => true,
         ],
-
+*/
         // Sidebar items:
-        [
+      /*  [
             'type' => 'sidebar-menu-search',
             'text' => 'search',
+        ],*/
+
+        ['header' => 'Matériels'],
+        [
+            'text'        => "Inventaire_de_matériels",
+            'route'         => 'materiels.index',
+            'icon'        => 'fa fa-box'
+        ],
+        ['header' => 'Finance'],
+        [
+            'text'        => "Liste_Personnes",
+            'route'         => 'personnes.index',
+            'icon'        => 'fa fa-box'
         ],
         [
-            'text' => 'blog',
-            'url'  => 'admin/blog',
-            'can'  => 'manage-blog'
+            'text'        => "Transactions",
+            'route'         => 'transactions',
+            'icon'        => 'fa fa-box'
         ],
-
-        ['header' => 'Boites'],
         [
-            'text'        => "Liste des boites",
-            'route'         => 'boites.index',
-            'icon'        => 'fa fa-list'
+            'text'        => "Incomes",
+            'route'         => 'incomes',
+            'icon'        => 'fa fa-box'
         ],
-
+        [
+            'text'        => "Depenses",
+            'route'         => 'depenses',
+            'icon'        => 'fa fa-box'
+        ],
 
     ],
 
@@ -337,8 +353,8 @@ return [
             'files' => [
                 [
                     'type' => 'js',
-                    'asset' => false,
-                    'location' => '//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.bundle.min.js',
+                    'asset' => true,
+                    'location' => 'vendor/chart.js/Chart.bundle.min.js',
                 ],
             ],
         ],

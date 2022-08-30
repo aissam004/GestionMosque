@@ -57,6 +57,8 @@ return [
     'url' => env('APP_URL', 'http://localhost'),
 
     'asset_url' => env('ASSET_URL'),
+	'mix_url' => env('MIX_ASSET_URL',null),
+
 
     /*
     |--------------------------------------------------------------------------
@@ -82,7 +84,8 @@ return [
     |
     */
 
-    'locale' => 'fr',
+    'locale' => 'ar',
+    'direction' => 'ltr',
 
     /*
     |--------------------------------------------------------------------------
@@ -177,7 +180,9 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        
+
+        JasperPHP\JasperPHPServiceProvider::class,
+        Fx3costa\LaravelChartJs\Providers\ChartjsServiceProvider::class
     ],
 
     /*

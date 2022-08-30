@@ -2,6 +2,7 @@ require('./bootstrap');
 
 import Alpine from 'alpinejs';
 import { cloneDeep } from 'lodash';
+//import Tags from './tags'
 
 window.Alpine = Alpine;
 
@@ -9,8 +10,14 @@ Alpine.start();
 require('./pdfobject')
 require('./dynamic-form');
 
+
+
+
 var classOfOptionsNotToDuplicate="select-options";
 var optionsToRemove=[];
+
+//Tags.init("select[multiple].tags");
+
 
 var dynamic_form =  $("#dynamic_form").dynamicForm("#dynamic_form","#plus", "#minus", {
 
@@ -56,5 +63,18 @@ var dynamic_form =  $("#dynamic_form").dynamicForm("#dynamic_form","#plus", "#mi
 
 });
 
+
+
+  window.loadSelect2 = () => {
+   $('.tags').select2({
+    placeholder : "Selectionner multiple tags...",
+    tags: true
+  });
+  }
+
+  loadSelect2();
+  window.livewire.on('loadSelect2Hydrate',()=>{
+     loadSelect2();
+  });
 
 

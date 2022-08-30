@@ -13,8 +13,7 @@
     </x-slot>
 
 <div class="container-fluid">
-
-
+    <a href="{{ route('boites.create') }}" class="btn btn-primary">{{ __('Créer une Boite') }}</a>
     <livewire:index-boites
 
      hideable="select"

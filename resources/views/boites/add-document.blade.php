@@ -1,6 +1,6 @@
 @section('plugins.BsCustomFileInput', true)
 
-
+@section('plugins.Select2', true)
 
 <div>
     @if (session()->has('message'))
@@ -12,17 +12,22 @@
 
         </div>
     @endif
+        @if ($this->document)
+            <form wire:submit.prevent="updateDocument" >
 
-    <form wire:submit.prevent="saveDocument" >
+        @else
+            <form wire:submit.prevent="saveDocument" >
+        @endif
 
-        <div class="card">
+
+        <div class="card" id="form-document">
             <div class="card-header  bg-light">
-                <h5 class="card-title text-bold">{{ __("Document") }}</h5>
+                <h5 class="card-title text-bold">{{ $this->document?__("Modifier"):__("Ajouter") }} {{ __("document") }}</h5>
             </div>
 
-            <div class="card-body">
+            <div class="card-body" >
                     <div class="row" >
-                        <x-adminlte-input  type="text" name="reference" wire:model.lazy="reference" label='{{ __("Reference") }}' placeholder='Reference' style="width:auto;" label-class="text-lightblue" required>
+                        <x-adminlte-input  type="text" name="reference" wire:model.defer="reference" label='{{ __("Reference") }}' placeholder='Reference' style="width:auto;" label-class="text-lightblue" required>
                             <x-slot name="prependSlot">
                                 <div class="input-group-text">
                                     <i class="fa fa-solid fa-barcode"></i>
@@ -31,7 +36,7 @@
 
                         </x-adminlte-input>
 
-                        <x-adminlte-input  type="date" name="date" label='{{ __("Date") }}' wire:model.lazy="date" fgroup-class="ml-2"  style="width:auto;" label-class="text-lightblue" required>
+                        <x-adminlte-input  type="date" name="date" label='{{ __("Date") }}' wire:model.defer="date" fgroup-class="ml-2"  style="width:auto;" label-class="text-lightblue" required>
                             <x-slot name="prependSlot">
                                 <div class="input-group-text">
                                     <i class="fa  fa-calendar-alt"></i>
@@ -40,15 +45,8 @@
 
                         </x-adminlte-input>
 
-                        <x-adminlte-input  type="text" name="reference" wire:model.lazy="reference" fgroup-class="ml-2" label='{{ __("Reference") }}' placeholder='Reference' style="width:auto;" label-class="text-lightblue" required>
-                            <x-slot name="prependSlot">
-                                <div class="input-group-text">
-                                    <i class="fa fa-solid fa-barcode"></i>
-                                </div>
-                            </x-slot>
 
-                        </x-adminlte-input>
-                        <x-adminlte-select   name="structure_id" label='{{ __("Structure") }}' class="select-options" fgroup-class="ml-2" style="width:auto;" label-class="text-lightblue" required wire:model.lazy="structure_id">
+                        <x-adminlte-select   name="structure_id" label='{{ __("Structure") }}' class="select-options" fgroup-class="ml-2" style="width:auto;" label-class="text-lightblue" required wire:model.defer="structure_id">
                             <x-slot name="prependSlot">
                                 <div class="input-group-text">
                                     <i class="fab fa-apple"></i>
@@ -93,7 +91,7 @@
                     </div>
                     <div class="row" >
                         <x-adminlte-textarea name="objet" label="{{ __('Objet') }}" rows=5 style="width:400px;"
-                                            label-class="text-primary" placeholder="{{ __('Ecrire l\'objet du document...') }}">
+                                        required    label-class="text-primary" placeholder="{{ __('Ecrire l\'objet du document...') }}" wire:model.defer="objet">
                                         <x-slot name="prependSlot">
                                                     <div class="input-group-text">
                                                         <i class="fas fa-lg fa-comment-dots text-primary"></i>
@@ -101,7 +99,7 @@
                                             </x-slot>
                         </x-adminlte-textarea>
                         <x-adminlte-textarea name="observation" label="{{ __('Observation') }}" rows=5 style="width:400px;"
-                                            label-class="text-primary" fgroup-class="ml-2" placeholder="{{ __('Ecrire l\'observation...') }}">
+                                            label-class="text-primary" fgroup-class="ml-2" placeholder="{{ __('Ecrire l\'observation...') }}" wire:model.defer="observation">
                                         <x-slot name="prependSlot">
                                                     <div class="input-group-text">
                                                         <i class="fas fa-lg fa-comment-dots text-primary"></i>
@@ -110,8 +108,25 @@
                         </x-adminlte-textarea>
                     </div>
                     <div class="row" >
+
+                        <x-adminlte-select   name="nature_id" label='{{ __("Nature") }}' class="select-options" fgroup-class="ml-2"
+                                                style="width:auto;" label-class="text-lightblue" wire:model.defer="nature_id">
+                            <x-slot name="prependSlot">
+                                <div class="input-group-text">
+                                    <i class="fab fa-apple"></i>
+                                </div>
+                            </x-slot>
+                            <option   disabled value="null">{{ __('Selectionner nature') }}</option>
+                            @if (is_array($natures) || is_object($natures))
+                                @foreach ($natures as $nature)
+                                    <option   value="{{ $nature->id }}" >{{ $nature->titre }}</option>
+                                    @endforeach
+                            @endif
+
+                        </x-adminlte-select>
+
                         <x-adminlte-select   name="domaine_id" label='{{ __("Domaine") }}' class="select-options" fgroup-class="ml-2"
-                                                style="width:auto;" label-class="text-lightblue" required wire:model.lazy="domaine_id">
+                                                style="width:auto;" label-class="text-lightblue" wire:model.defer="domaine_id">
                             <x-slot name="prependSlot">
                                 <div class="input-group-text">
                                     <i class="fab fa-apple"></i>
@@ -127,13 +142,13 @@
                         </x-adminlte-select>
 
                         <x-adminlte-select   name="confidentialite_id" label='{{ __("Confidentialite") }}' class="select-options" fgroup-class="ml-2"
-                                                style="width:auto;" label-class="text-lightblue" required wire:model.lazy="confidentialite_id">
+                                                style="width:auto;" label-class="text-lightblue" wire:model.defer="confidentialite_id">
                             <x-slot name="prependSlot">
                                 <div class="input-group-text">
                                     <i class="fab fa-apple"></i>
                                 </div>
                             </x-slot>
-                            <option   disabled value="null">{{ __('Selectionner confidentialite') }}</option>
+                            <option   disabled value="null">{{ __('Selectionner confidentialites') }}</option>
                             @if (is_array($confidentialites) || is_object($confidentialites))
                                 @foreach ($confidentialites as $confidentialite)
                                     <option   value="{{ $confidentialite->id }}" >{{ $confidentialite->titre }}</option>
@@ -141,10 +156,17 @@
                             @endif
 
                         </x-adminlte-select>
+
+
+
+
                     </div>
 
 
-                   <x-adminlte-button  type="submit" wire:loading.attr="disabled" wire:target="file" label="{{ __('Save') }}" theme="success" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"/>
+                   <x-adminlte-button  type="submit" wire:loading.attr="disabled" wire:target="file" label='{{ $this->document?__("Edit"):__("Save") }}' theme="success" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"/>
+                    <x-adminlte-button  type="reset" wire:click="resetDocument" label='{{ __("Réninstaliser") }}' theme="secondary" class="bg-gray-500" />
+
+
                </div>
             </div>
 

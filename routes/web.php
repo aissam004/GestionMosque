@@ -1,6 +1,9 @@
 <?php
 
-use App\Http\Controllers\BoiteController;
+use App\Http\Controllers\IndexController;
+use App\Http\Controllers\MaterielController;
+use App\Http\Controllers\PersonneController;
+use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,10 +16,20 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::middleware(['auth'])->group(function () {
+    Route::get('/',[IndexController::class,'index'])->name('index');
+    Route::get('materiels/options',[MaterielController::class,'options'])->name('materiels.options');
+    Route::resource('materiels',MaterielController::class);
+    Route::get('/generateListesMateriels', [MaterielController::class, 'generateListeMateriels'])->name('generateListeMateriels');
+    Route::resource('personnes',PersonneController::class);
 
-Route::resource('boites',BoiteController::class);
+    Route::get('/generatePersonne/{id}', [PersonneController::class, 'generatePersonne'])->name('generatePersonne');
 
-
+    Route::get('transactions',[TransactionController::class,'index'])->name('transactions');
+    Route::get('incomes',[TransactionController::class,'incomes'])->name('incomes');
+    Route::get('depenses',[TransactionController::class,'depenses'])->name('depenses');
+    Route::get('/generateTransactions/{all}-{isincome}', [TransactionController::class, 'generateTransactions'])->name('generateTransactions');
+});
 
 
 

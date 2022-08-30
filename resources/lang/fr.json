@@ -734,5 +734,16 @@
 
         "Username":"login",
         "modify material": "Modifier le matériel",
-        "materials":"matériel|matériels"
+        "materials":"matériel|matériels",
+
+
+        "Search in":"Rechercher dans",
+        "Results":"Résultats",
+        "All": "Tous",
+        "Export":"Exporter",
+        "Show / Hide columns":"Montrer",
+        "hide":"Masquer",
+        "Reset":"Réinitialiser",
+        "Show / Hide Columns":"Afficher / Masquer les colonnes"
+
 }
